@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeongho.board.repository.ReplyMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="no">
+        insert into reply (content, writer, board_no)
+        values (#{content}, #{writer}, #{boardNo})
+    </insert>
+
+    <update id="update">
+        update reply
+        set content=#{content}
+        where no=#{no}
+    </update>
+
+    <delete id="delete">
+        delete from reply
+        where no=#{replyNo}
+    </delete>
+
+    <select id="findByNo" resultType="Reply">
+        select no, content, writer, board_no
+        from reply
+        where no=#{replyNo}
+    </select>
+
+    <select id="findAll" resultType="board">
+        select no, content, writer, board_no
+        from reply
+    </select>
+
+</mapper>

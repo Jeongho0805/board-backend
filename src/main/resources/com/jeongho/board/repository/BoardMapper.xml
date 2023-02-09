@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeongho.board.repository.BoardMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="no">
+        insert into board (title, content, user_no)
+        values (#{title}, #{content}, #{userNo})
+    </insert>
+
+    <update id="update">
+        update board
+        <trim prefix="set" prefixOverrides=",">
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="content != null">
+                content=#{content}
+            </if>
+        </trim>
+        where no=#{no}
+    </update>
+
+    <delete id="delete">
+        delete from board
+        where no=#{boardNo}
+    </delete>
+
+    <select id="findByNo" resultType="Board">
+        select no, title, content, user_no
+        from board
+        where no=#{boardNo}
+    </select>
+
+    <select id="findAll" resultType="board">
+        select no, title, content, user_no
+        from board
+        <if test="searchQuery != null and !searchQuery.equals('')">
+            where title like CONCAT('%',#{searchQuery},'%')
+        </if>
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="getTotalCount" resultType="long">
+        select count(*)
+        from board
+        <if test="searchQuery != null and !searchQuery.equals('')">
+            where title like CONCAT('%',#{searchQuery},'%')
+        </if>
+    </select>
+
+</mapper>
